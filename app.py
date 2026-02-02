@@ -1,27 +1,16 @@
 import streamlit as st
 from pathlib import Path
-from PIL import Image
 
-# Page config MUST be the first Streamlit command
+# -------------------------------
+# Page Config (must be first)
+# -------------------------------
 st.set_page_config(
     page_title="CORA",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# --- Sidebar Logo ---
-BASE_DIR = Path(__file__).resolve().parent
-LOGO_PATH = BASE_DIR / "logo.png"   # <-- make sure this file exists (NOT logo.pdf)
-
-try:
-    if LOGO_PATH.exists():
-        img = Image.open(LOGO_PATH)
-        st.sidebar.image(img, use_container_width=True)
-    else:
-        st.sidebar.warning(f"⚠️ Logo not found: {LOGO_PATH.name}")
-except Exception as e:
-    st.sidebar.warning(f"⚠️ Could not load logo: {e}")
-
+# (Logo removed for now — will add back later)
 
 # -----------------------------
 # Styling
