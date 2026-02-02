@@ -10,49 +10,85 @@ st.set_page_config(
 )
 
 # -----------------------------
-# Styling
+# Styling (Clean + Consistent)
 # -----------------------------
 st.markdown(
     """
-<style>
-/* Tighten page spacing */
-.block-container { padding-top: 1.2rem; padding-bottom: 2rem; max-width: 1200px; }
+    <style>
 
-/* Card style */
-.card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 16px;
-  padding: 16px 18px;
-}
+    /* Layout */
+    .block-container {
+        padding-top: 1.5rem;
+        padding-bottom: 2rem;
+        max-width: 1200px;
+    }
 
-/* Subtle label */
-.muted { color: rgba(255,255,255,0.65); font-size: 0.95rem; }
+    /* Card Component */
+    .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 18px;
+        padding: 18px 20px;
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
 
-/* Big header */
-.hero-title { font-size: 2.1rem; font-weight: 700; margin: 0; }
-.hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.75); margin-top: 0.25rem; }
+    /* Muted Text */
+    .muted {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
 
-/* KPI */
-.kpi { font-size: 1.7rem; font-weight: 700; }
-.kpi-label { color: rgba(255,255,255,0.65); font-size: 0.9rem; }
+    /* Headings */
+    .hero-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0;
+    }
 
-/* Divider */
-.hr { height: 1px; background: rgba(255,255,255,0.08); margin: 10px 0 14px 0; }
+    .hero-sub {
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.75);
+        margin-top: 0.35rem;
+        line-height: 1.5;
+    }
 
-/* Small badge */
-.badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(34,197,94,0.12);
-  border: 1px solid rgba(34,197,94,0.25);
-  color: rgba(34,197,94,1);
-  font-size: 0.85rem;
-  margin-left: 8px;
-}
-</style>
-""",
+    /* KPI Numbers */
+    .kpi {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .kpi-label {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.60);
+    }
+
+    /* Divider */
+    .hr {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 14px 0;
+    }
+
+    /* Status Badge */
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid rgba(34, 197, 94, 0.30);
+        color: rgba(34, 197, 94, 1);
+
+        margin-left: 8px;
+    }
+
+    </style>
+    """,
     unsafe_allow_html=True,
 )
 
@@ -183,3 +219,43 @@ with right:
             """,
             unsafe_allow_html=True,
         )
+
+
+    # -----------------------------
+    # About Section
+    # -----------------------------
+    st.markdown("### About CORA")
+
+    st.markdown(
+        """
+        <div class="card">
+        <div class="muted">
+        <b>CORA</b> (Coffee Operations + Reporting Assistant) is a demo app built to show how
+        AI can support content planning, post scheduling, and media organization for small businesses.
+        <br/><br/>
+        This MVP is designed as a workflow prototype — not a full production scheduler yet.
+        </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("<br/>", unsafe_allow_html=True)
+    # -----------------------------
+    # How to Use Section
+    # -----------------------------
+    st.markdown("### How to Use This App")
+
+    st.markdown(
+        """
+        <div class="card">
+        <b>Step 1:</b> Generate a post idea in <i>AI Studio</i><br/>
+        <b>Step 2:</b> Edit captions + hashtags in <i>Post Editor</i><br/>
+        <b>Step 3:</b> Upload images in <i>Library</i><br/>
+        <b>Step 4:</b> View scheduled posts in <i>Calendar</i>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("<div class='hr'></div>", unsafe_allow_html=True)
