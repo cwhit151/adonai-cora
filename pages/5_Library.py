@@ -12,6 +12,12 @@ st.title("📁 Media Library")
 # ----------------------------
 # Upload (MVP demo behavior)
 # ----------------------------
+from pathlib import Path
+import uuid
+
+UPLOAD_DIR = Path("assets/uploads")
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
 with st.expander("Upload New Media"):
     uploaded_file = st.file_uploader(
         "Choose an image...",
@@ -21,21 +27,26 @@ with st.expander("Upload New Media"):
     tags = st.text_input("Tags (comma separated)", value="", key="user_upload_tags")
 
     if uploaded_file is not None:
-        st.info("MVP Demo: This currently stores a demo path (not the real uploaded file).")
+        # Preview immediately (works even before saving)
+        st.image(uploaded_file, use_container_width=True)
 
         if st.button("Save to Library"):
-            # Demo path (existing behavior)
-            fake_path = f"assets/sample_images/{uploaded_file.name}"
+            # Create a safe unique filename
+            ext = Path(uploaded_file.name).suffix.lower()
+            safe_name = f"{uuid.uuid4().hex}{ext}"
+            save_path = UPLOAD_DIR / safe_name
 
+            # Write bytes to disk
+            save_path.write_bytes(uploaded_file.getbuffer())
+
+            # Store REAL path in DB
             execute_command(
                 "INSERT INTO media_assets (media_path, source, tags) VALUES (?, ?, ?)",
-                (fake_path, "manual", tags),
+                (str(save_path), "upload", tags),
             )
 
-            st.success(f"Saved {uploaded_file.name} to library!")
+            st.success("Saved to library!")
             st.rerun()
-
-st.divider()
 
 # ----------------------------
 # Gallery
