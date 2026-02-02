@@ -51,31 +51,59 @@ with st.expander("Upload New Media"):
 # ----------------------------
 # Gallery
 # ----------------------------
+st.divider()
+st.subheader("📸 Library Grid")
+
 assets = run_query("SELECT * FROM media_assets ORDER BY created_at DESC")
 
 if assets is None or (isinstance(assets, pd.DataFrame) and assets.empty):
     st.info("No media assets found.")
-else:
-    # Ensure we have a DataFrame (depending on your db helper)
-    if not isinstance(assets, pd.DataFrame):
-        assets = pd.DataFrame(assets)
+    st.stop()
 
-    cols = st.columns(3)
+if not isinstance(assets, pd.DataFrame):
+    assets = pd.DataFrame(assets)
 
-    for idx, row in assets.iterrows():
-        col = cols[idx % 3]
+# --- Instagram-style grid ---
+cols = st.columns(3)
 
-        with col:
-            show_image_safely(
-                row.get("media_path"),
-                caption=f"{row.get('source', 'source')} • {row.get('tags', '')}",
+THUMB_SIZE = 250  # Insta-like square size
+
+for idx, row in assets.iterrows():
+    col = cols[idx % 3]
+
+    with col:
+        path = row["media_path"]
+
+        # Square thumbnail preview
+        try:
+            from PIL import Image
+
+            img = Image.open(path)
+
+            # Crop to square center
+            w, h = img.size
+            min_dim = min(w, h)
+
+            left = (w - min_dim) // 2
+            top = (h - min_dim) // 2
+            right = left + min_dim
+            bottom = top + min_dim
+
+            img = img.crop((left, top, right, bottom))
+            img = img.resize((THUMB_SIZE, THUMB_SIZE))
+
+            st.image(img, use_container_width=False)
+
+        except Exception:
+            st.caption("⚠️ Could not preview")
+
+        # Optional caption (small)
+        st.caption(f"ID: {row['id']}")
+
+        # Delete button
+        if st.button("Delete", key=f"del_{row['id']}"):
+            execute_command(
+                "DELETE FROM media_assets WHERE id=?",
+                (row["id"],)
             )
-
-            st.caption(f"ID: {row.get('id')}")
-
-            if st.button("Delete", key=f"del_{row.get('id')}"):
-                execute_command(
-                    "DELETE FROM media_assets WHERE id=?",
-                    (row.get("id"),),
-                )
-                st.rerun()
+            st.rerun()
