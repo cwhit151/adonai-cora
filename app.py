@@ -1,24 +1,26 @@
 import streamlit as st
 from pathlib import Path
+from PIL import Image
 
-# --- Logo ---
-LOGO_PATH = Path("logo.pdf")
-
-if LOGO_PATH.exists():
-    st.image(str(LOGO_PATH), width=180)
-else:
-    st.warning("Logo not found: logo.ppdf")
-
-
-# -----------------------------
-# Config
-# -----------------------------
+# Page config MUST be the first Streamlit command
 st.set_page_config(
     page_title="CORA",
-    page_icon="☕",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# --- Sidebar Logo ---
+BASE_DIR = Path(__file__).resolve().parent
+LOGO_PATH = BASE_DIR / "logo.png"   # <-- make sure this file exists (NOT logo.pdf)
+
+try:
+    if LOGO_PATH.exists():
+        img = Image.open(LOGO_PATH)
+        st.sidebar.image(img, use_container_width=True)
+    else:
+        st.sidebar.warning(f"⚠️ Logo not found: {LOGO_PATH.name}")
+except Exception as e:
+    st.sidebar.warning(f"⚠️ Could not load logo: {e}")
 
 
 # -----------------------------
