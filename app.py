@@ -1,6 +1,15 @@
 import streamlit as st
 from pathlib import Path
 
+# --- Logo ---
+LOGO_PATH = Path("logo.png")
+
+if LOGO_PATH.exists():
+    st.image(str(LOGO_PATH), width=180)
+else:
+    st.warning("Logo not found: logo.png")
+
+
 # -----------------------------
 # Config
 # -----------------------------
@@ -11,7 +20,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-LOGO_PATH = Path("assets/Website_Header_Logo_Default.avif")
 
 # -----------------------------
 # Styling
