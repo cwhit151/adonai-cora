@@ -1,5 +1,4 @@
 import streamlit as st
-from pathlib import Path
 
 # -------------------------------
 # Page Config (must be first)
@@ -9,8 +8,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-# (Logo removed for now — will add back later)
 
 # -----------------------------
 # Styling
@@ -62,24 +59,8 @@ st.markdown(
 # -----------------------------
 # Helpers
 # -----------------------------
-def show_logo():
-    """
-    Streamlit/Pillow AVIF support can vary.
-    This tries to render it; if it fails, it won't crash the app.
-    """
-    if LOGO_PATH.exists():
-        try:
-            st.image(str(LOGO_PATH), width=210)
-            return
-        except Exception:
-            pass
-    st.markdown("### ☕ CORA")
-
 def page_link_safe(label: str, page: str, icon: str = ""):
-    """
-    st.page_link exists on newer Streamlit.
-    Fallback: just show a hint.
-    """
+    """Use st.page_link when available; otherwise show a hint."""
     try:
         st.page_link(page, label=f"{icon} {label}".strip())
     except Exception:
@@ -91,8 +72,11 @@ def page_link_safe(label: str, page: str, icon: str = ""):
 left, right = st.columns([1, 2.2], gap="large")
 
 with left:
-    show_logo()
-    st.markdown('<div class="muted">Coffee Operations + Reporting Assistant</div>', unsafe_allow_html=True)
+    st.markdown("### ☕ CORA")
+    st.markdown(
+        '<div class="muted">Coffee Operations + Reporting Assistant</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown("<div class='hr'></div>", unsafe_allow_html=True)
 
     st.markdown("#### Quick Actions")
@@ -135,13 +119,25 @@ with right:
     # KPIs (demo-friendly placeholders)
     k1, k2, k3, k4 = st.columns(4, gap="medium")
     with k1:
-        st.markdown("<div class='card'><div class='kpi'>12</div><div class='kpi-label'>Drafts</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='card'><div class='kpi'>12</div><div class='kpi-label'>Drafts</div></div>",
+            unsafe_allow_html=True,
+        )
     with k2:
-        st.markdown("<div class='card'><div class='kpi'>6</div><div class='kpi-label'>Scheduled</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='card'><div class='kpi'>6</div><div class='kpi-label'>Scheduled</div></div>",
+            unsafe_allow_html=True,
+        )
     with k3:
-        st.markdown("<div class='card'><div class='kpi'>3</div><div class='kpi-label'>Approved</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='card'><div class='kpi'>3</div><div class='kpi-label'>Approved</div></div>",
+            unsafe_allow_html=True,
+        )
     with k4:
-        st.markdown("<div class='card'><div class='kpi'>18</div><div class='kpi-label'>Media Assets</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='card'><div class='kpi'>18</div><div class='kpi-label'>Media Assets</div></div>",
+            unsafe_allow_html=True,
+        )
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
