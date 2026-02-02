@@ -28,7 +28,16 @@ with st.expander("Upload New Media"):
 
     if uploaded_file is not None:
         # Preview immediately (works even before saving)
-        st.image(uploaded_file, use_container_width=True)
+        from PIL import Image
+
+img = Image.open(uploaded_file)
+img.thumbnail((300, 300))
+
+c1, c2, c3 = st.columns([1, 2, 1])
+
+with c2:
+    st.image(img, caption="Preview", width=250)
+
 
         if st.button("Save to Library"):
             # Create a safe unique filename
