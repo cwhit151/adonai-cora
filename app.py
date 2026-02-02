@@ -2,12 +2,12 @@ import streamlit as st
 from pathlib import Path
 
 # --- Logo ---
-LOGO_PATH = Path("logo.png")
+LOGO_PATH = Path("logo.pdf")
 
 if LOGO_PATH.exists():
     st.image(str(LOGO_PATH), width=180)
 else:
-    st.warning("Logo not found: logo.png")
+    st.warning("Logo not found: logo.ppdf")
 
 
 # -----------------------------
