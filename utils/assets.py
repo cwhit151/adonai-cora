@@ -1,40 +1,41 @@
-# utils/assets.py
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Tuple, Union
-from PIL import Image, ImageDraw
+from typing import Optional, Union
+
+import streamlit as st
 
 PathLike = Union[str, Path]
 
-def safe_image(
-    path: Optional[PathLike],
-    *,
-    fallback_size: Tuple[int, int] = (1200, 675),
-    label: str = "Image unavailable",
-) -> Image.Image:
+IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
+
+def show_image_safely(path: Optional[PathLike], *, caption: str = "") -> None:
     """
-    Returns a PIL Image.
-    - If `path` exists and opens correctly -> returns the real image
-    - Otherwise -> returns a generated placeholder image (no external assets needed)
+    Safe Streamlit image display:
+    - Only displays if path exists AND is an image file
+    - Otherwise shows a small warning instead of crashing
     """
-    if path:
-        try:
-            p = Path(path)
-            if p.exists() and p.is_file():
-                return Image.open(p)
-        except Exception:
-            pass
+    if not path:
+        st.caption("No media attached.")
+        return
 
-    # Generated fallback
-    w, h = fallback_size
-    img = Image.new("RGB", (w, h), (245, 245, 245))
-    draw = ImageDraw.Draw(img)
+    p = Path(str(path))
 
-    # Simple centered label (no font dependency)
-    text = label
-    bbox = draw.textbbox((0, 0), text)
-    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    draw.text(((w - tw) / 2, (h - th) / 2), text, fill=(120, 120, 120))
+    # If it's a folder or doesn't exist, don't crash
+    if not p.exists():
+        st.caption("Media missing.")
+        return
+    if p.is_dir():
+        st.caption("Media path is a folder (not an image).")
+        return
 
-    return img
+    # Must be a known image extension
+    if p.suffix.lower() not in IMAGE_EXTS:
+        st.caption("Media is not an image file.")
+        return
+
+    # If PIL fails anyway, catch it
+    try:
+        st.image(str(p), use_container_width=True, caption=caption or None)
+    except Exception:
+        st.caption("Could not preview this image.")
